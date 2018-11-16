@@ -19,7 +19,7 @@ function launchmaster() {
     echo "Redis master data doesn't exist, data won't be persistent!"
     mkdir /redis-master-data
   fi
-  redis-server /redis-master/redis.conf
+  /usr/local/bin/redis-server /redis-master/redis.conf
 }
 
 function launchsentinel() {
@@ -51,7 +51,7 @@ function launchsentinel() {
 
 function launchslave() {
   while true; do
-    master=$(redis-cli -h ${REDIS_SENTINEL_SERVICE_HOST} -p ${REDIS_SENTINEL_SERVICE_PORT} --csv SENTINEL get-master-addr-by-name mymaster | tr ',' ' ' | cut -d' ' -f1)
+    master=$(/usr/local/bin/redis-cli -h ${REDIS_SENTINEL_SERVICE_HOST} -p ${REDIS_SENTINEL_SERVICE_PORT} --csv SENTINEL get-master-addr-by-name mymaster | tr ',' ' ' | cut -d' ' -f1)
     if [[ -n ${master} ]]; then
       master="${master//\"}"
     else
