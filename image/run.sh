@@ -24,14 +24,14 @@ function launchmaster() {
 
 function launchsentinel() {
   while true; do
-    master=$(redis-cli -h ${REDIS_SENTINEL_SERVICE_HOST} -p ${REDIS_SENTINEL_SERVICE_PORT} -a "redispass" --csv SENTINEL get-master-addr-by-name mymaster | tr ',' ' ' | cut -d' ' -f1)
+    master=$(redis-cli -h ${REDIS_SENTINEL_SERVICE_HOST} -p ${REDIS_SENTINEL_SERVICE_PORT} -a {$REDIS_PASSWORD} --csv SENTINEL get-master-addr-by-name mymaster | tr ',' ' ' | cut -d' ' -f1)
     if [[ -n ${master} ]]; then
       master="${master//\"}"
     else
       master="${REDIS_MASTER_SERVICE_HOST}"
     fi
 
-    redis-cli -h ${master} -a "redispass" INFO
+    redis-cli -h ${master} -a {REDIS_PASSWORD} INFO
     if [[ "$?" == "0" ]]; then
       break
     fi
@@ -51,7 +51,7 @@ function launchsentinel() {
 
 function launchslave() {
   while true; do
-    master=$(/usr/local/bin/redis-cli -h ${REDIS_SENTINEL_SERVICE_HOST} -a "redispass" -p ${REDIS_SENTINEL_SERVICE_PORT} --csv SENTINEL get-master-addr-by-name mymaster | tr ',' ' ' | cut -d' ' -f1)
+    master=$(/usr/local/bin/redis-cli -h ${REDIS_SENTINEL_SERVICE_HOST} -a ${REDIS_PASSWORD} -p ${REDIS_SENTINEL_SERVICE_PORT} --csv SENTINEL get-master-addr-by-name mymaster | tr ',' ' ' | cut -d' ' -f1)
     if [[ -n ${master} ]]; then
       master="${master//\"}"
     else
@@ -59,7 +59,7 @@ function launchslave() {
       sleep 60
       exit 1
     fi
-    redis-cli -h ${master} -a "redispass" INFO
+    redis-cli -h ${master} -a ${REDIS_PASSWORD} INFO
     if [[ "$?" == "0" ]]; then
       break
     fi
