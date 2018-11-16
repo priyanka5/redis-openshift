@@ -17,7 +17,7 @@ FROM redis
 #RUN yum install epel-release -y
 
 #RUN yum install redis hostname -y ; yum clean all
-RUN yum install hostname -y; yum clean all -y
+RUN yum install hostname -y
 #RUN yum install redis -y
 
 COPY redis-master.conf /redis-master/redis.conf
