@@ -14,7 +14,7 @@
 
 #FROM rhel7
 FROM registry.redhat.io/rhscl/redis-32-rhel7:latest
-#RUN yum install epel-release -y
+RUN yum install epel-release -y
 
 #RUN yum install redis hostname -y ; yum clean all
 RUN yum install hostname -y; yum clean all -y
