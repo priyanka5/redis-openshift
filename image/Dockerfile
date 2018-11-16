@@ -18,8 +18,7 @@ FROM registry.redhat.io/rhscl/redis-32-rhel7:latest
 
 #RUN yum install redis hostname -y ; yum clean all
 RUN yum install hostname -y; yum clean all -y
-RUN yum install redis-cli -y
-RUN yum install redis-server -y
+RUN yum install redis -y
 
 COPY redis-master.conf /redis-master/redis.conf
 COPY redis-slave.conf /redis-slave/redis.conf
